@@ -18,7 +18,7 @@ const Features = () => {
             spending and stay on track effortlessly with our intuitive budget
             tracking platform.
           </p>
-          <Link href="/" className="btn_dark">
+          <Link href="/dashboard" className="btn_dark">
             explore more
           </Link>
         </div>
@@ -31,7 +31,7 @@ const Features = () => {
             Concerned about managing your expenses? Effortlessly keep track of
             your spending with our expense management platform.
           </p>
-          <Link href="/" className="btn_dark">
+          <Link href="/dashboard/expenses" className="btn_dark">
             explore more
           </Link>
         </div>
@@ -44,7 +44,7 @@ const Features = () => {
             Need help with your finances? Get usefull guidance and support with
             our comprehensive finance assistance platform.
           </p>
-          <Link href="/" className="btn_dark">
+          <Link href="/dashboard/over-budget" className="btn_dark">
             explore more
           </Link>
         </div>
