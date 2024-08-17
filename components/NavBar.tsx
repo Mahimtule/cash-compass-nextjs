@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import MobileSideBar from "./utils/MobileSideBar";
 
 const NavBar = () => {
   return (
@@ -10,6 +11,7 @@ const NavBar = () => {
       <Link href="/" className="text-xl font-bold text-green-700">
         CashCompass
       </Link>
+      <MobileSideBar/>
     </nav>
   );
 };

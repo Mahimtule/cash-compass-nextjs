@@ -10,7 +10,7 @@ const layout = ({
     <main className="w-full h-[calc(100vh-61px)] bg-gray-100">
       <div className="h-full w-full flex">
         <SideBar />
-        <div>{children}</div>
+        <div className="px-6 py-3 w-full">{children}</div>
       </div>
     </main>
   );
