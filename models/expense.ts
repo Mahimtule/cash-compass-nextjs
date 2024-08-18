@@ -7,20 +7,14 @@ const ExpenseSchema = new mongoose.Schema({
   },
   amount: {
     type: Number,
-    required: true,
-    default: 0,
   },
   category: {
     type: String,
     enum: ["personal", "work", "home", "other"],
-    required: true,
-    default: "personal",
   },
   priority: {
     type: String,
     enum: ["low", "mid", "high"],
-    required: true,
-    default: "mid",
   },
   createdAt: {
     type: Date,

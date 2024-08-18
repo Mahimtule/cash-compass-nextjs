@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import ExpenseModel from "@/components/utils/ExpenseModel";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -39,7 +40,7 @@ const page = () => {
     <section className="w-full">
       <div className="mb-3 flex justify-between items-center">
         <h1 className="text-lg font-medium">Expense</h1>
-        <Button>Add</Button>
+        <ExpenseModel />
       </div>
       <Table className="border w-full bg-white">
         <TableHeader>
@@ -56,7 +57,7 @@ const page = () => {
             expenses.map((expense) => (
               <TableRow key={expense.id}>
                 <TableCell>{expense.itemName}</TableCell>
-                <TableCell>{expense.amount}</TableCell>
+                <TableCell>₹{expense.amount}</TableCell>
                 <TableCell>{expense.category}</TableCell>
                 <TableCell>{expense.priority}</TableCell>
                 <TableCell>
@@ -66,7 +67,7 @@ const page = () => {
             ))
           ) : (
             <TableRow>
-              <TableCell>No Data Found</TableCell>
+              <TableCell className="font-medium">No Data Found</TableCell>
             </TableRow>
           )}
         </TableBody>

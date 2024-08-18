@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
-    const expenses = await Expense.find().sort({ createAt: -1 });
+    const expenses = await Expense.find().sort({ createdAt: -1 });
     return new NextResponse(
       JSON.stringify({
         expenses: expenses,
