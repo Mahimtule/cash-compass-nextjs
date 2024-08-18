@@ -19,12 +19,13 @@ import {
 } from "@/components/ui/select";
 import { FormEvent, useState } from "react";
 import axios from "axios";
+import { Pen } from "lucide-react";
 
 interface ModalProps {
   onCreate: (newExpense: any) => void;
 }
 
-const ExpenseModel = ({ onCreate }: ModalProps) => {
+const EditModal = ({ onCreate }: ModalProps) => {
   const [itemName, setItemName] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("personal");
@@ -53,13 +54,15 @@ const ExpenseModel = ({ onCreate }: ModalProps) => {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button>Add Expense</Button>
+          <Button size="icon">
+            <Pen width={16} height={16} />
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader className="text-left">
-            <DialogTitle className="md-2">Add New Expense</DialogTitle>
+            <DialogTitle className="md-2">Edit this Expense</DialogTitle>
             <DialogDescription>
-              Please fill the below fiels to add new expense
+              Please update the below fiels to Edit this expense
             </DialogDescription>
           </DialogHeader>
           <form
@@ -105,7 +108,7 @@ const ExpenseModel = ({ onCreate }: ModalProps) => {
             </Select>
             <DialogClose>
               <Button type="submit" className="mt-2">
-                Add Expense
+                Edit Expense
               </Button>
             </DialogClose>
           </form>
@@ -115,4 +118,4 @@ const ExpenseModel = ({ onCreate }: ModalProps) => {
   );
 };
 
-export default ExpenseModel;
+export default EditModal;
