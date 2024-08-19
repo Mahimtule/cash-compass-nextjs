@@ -16,6 +16,10 @@ const ExpenseSchema = new mongoose.Schema({
     type: String,
     enum: ["low", "mid", "high"],
   },
+  isOverBudget: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

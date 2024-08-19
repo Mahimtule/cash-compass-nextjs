@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,9 +11,11 @@ import {
 } from "@/components/ui/table";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Trash } from "lucide-react";
+import EditModal from "@/components/utils/EditModal";
 
 interface ExpensesProps {
-  id: string;
+  _id: string;
   itemName: string;
   amount: number;
   category: string;
@@ -28,16 +31,38 @@ const page = () => {
         const response = await axios.get("/api/v1/expense");
         setExpenses(response.data.expenses);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     fetchAllData();
   }, []);
 
+  const onEdit = (editedExpense: ExpensesProps) => {
+    setExpenses((prevExpenses) =>
+      prevExpenses.map((expense) =>
+        expense._id === editedExpense._id ? editedExpense : expense
+      )
+    );
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await axios.delete(`/api/v1/expense/${id}`);
+      setExpenses((prevExpenses) =>
+        prevExpenses.filter((expense) => expense._id !== id)
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <section className="w-full">
-      <div className="mb-3 flex justify-between items-center">
+      <div className="mb-3 flex flex-col justify-center items-start">
         <h1 className="text-lg font-medium">Over Budget</h1>
+        <p className="text-muted-foreground text-sm">
+          You can Delete/Edit the Expense with the low Priority to adjust the budget
+        </p>
       </div>
       <Table className="border w-full bg-white">
         <TableHeader>
@@ -52,19 +77,49 @@ const page = () => {
         <TableBody>
           {expenses.length > 0 ? (
             expenses.map((expense) => (
-              <TableRow key={expense.id}>
+              <TableRow
+                key={expense._id}
+                className={`${
+                  expense.priority === "low" ? "bg-red-500 text-white" : ""
+                }`}
+              >
                 <TableCell>{expense.itemName}</TableCell>
-                <TableCell>{expense.amount}</TableCell>
+                <TableCell>₹{expense.amount}</TableCell>
                 <TableCell>{expense.category}</TableCell>
-                <TableCell>{expense.priority}</TableCell>
+                <TableCell>
+                  <p
+                    className={`font-medium px-3 py-1 rounded-full text-white w-fit ${
+                      expense.priority === "low"
+                        ? "bg-green-500"
+                        : expense.priority === "mid"
+                        ? "bg-yellow-400"
+                        : "bg-red-600"
+                    }`}
+                  >
+                    {expense.priority}
+                  </p>
+                </TableCell>
                 <TableCell>
                   {new Date(expense.createdAt).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="flex justify-center items-center gap-2">
+                  <Button size="icon" onClick={() => handleDelete(expense._id)}>
+                    <Trash width={16} height={16} />{" "}
+                  </Button>
+                  <EditModal
+                    _id={expense._id}
+                    prevItemName={expense.itemName}
+                    prevAmount={expense.amount.toString()}
+                    prevCategory={expense.category}
+                    prevPriority={expense.priority}
+                    onEdit={onEdit}
+                  />
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell>No Data Found</TableCell>
+              <TableCell className="font-medium">No Data Found</TableCell>
             </TableRow>
           )}
         </TableBody>

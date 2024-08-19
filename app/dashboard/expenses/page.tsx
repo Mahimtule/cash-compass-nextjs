@@ -12,7 +12,7 @@ import {
 import ExpenseModel from "@/components/utils/ExpenseModel";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Trash, Pen } from "lucide-react";
+import { Trash } from "lucide-react";
 import EditModal from "@/components/utils/EditModal";
 
 interface ExpensesProps {
@@ -40,6 +40,14 @@ const page = () => {
 
   const onCreate = (newExpense: ExpensesProps) => {
     setExpenses((prevExpenses) => [newExpense, ...prevExpenses]);
+  };
+
+  const onEdit = (editedExpense: ExpensesProps) => {
+    setExpenses((prevExpenses) =>
+      prevExpenses.map((expense) =>
+        expense._id === editedExpense._id ? editedExpense : expense
+      )
+    );
   };
 
   const handleDelete = async (id: string) => {
@@ -76,16 +84,18 @@ const page = () => {
                 <TableCell>{expense.itemName}</TableCell>
                 <TableCell>₹{expense.amount}</TableCell>
                 <TableCell>{expense.category}</TableCell>
-                <TableCell
-                  className={`font-medium ${
-                    expense.priority === "low"
-                      ? "text-green-500"
-                      : expense.priority === "mid"
-                      ? "text-yellow-400"
-                      : "text-red-600"
-                  }`}
-                >
-                  {expense.priority}
+                <TableCell>
+                  <p
+                    className={`font-medium px-3 py-1 rounded-full text-white w-fit ${
+                      expense.priority === "low"
+                        ? "bg-green-500"
+                        : expense.priority === "mid"
+                        ? "bg-yellow-400"
+                        : "bg-red-600"
+                    }`}
+                  >
+                    {expense.priority}
+                  </p>
                 </TableCell>
                 <TableCell>
                   {new Date(expense.createdAt).toLocaleDateString()}
@@ -94,7 +104,14 @@ const page = () => {
                   <Button size="icon" onClick={() => handleDelete(expense._id)}>
                     <Trash width={16} height={16} />{" "}
                   </Button>
-                  <EditModal onCreate={() => {}} />
+                  <EditModal
+                    _id={expense._id}
+                    prevItemName={expense.itemName}
+                    prevAmount={expense.amount.toString()}
+                    prevCategory={expense.category}
+                    prevPriority={expense.priority}
+                    onEdit={onEdit}
+                  />
                 </TableCell>
               </TableRow>
             ))
