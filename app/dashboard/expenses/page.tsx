@@ -14,6 +14,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Trash } from "lucide-react";
 import EditModal from "@/components/utils/EditModal";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ExpensesProps {
   _id: string;
@@ -26,6 +27,7 @@ interface ExpensesProps {
 
 const page = () => {
   const [expenses, setExpenses] = useState<ExpensesProps[]>([]);
+  const { toast } = useToast();
   useEffect(() => {
     const fetchAllData = async () => {
       try {
@@ -40,6 +42,9 @@ const page = () => {
 
   const onCreate = (newExpense: ExpensesProps) => {
     setExpenses((prevExpenses) => [newExpense, ...prevExpenses]);
+    toast({
+      title: "New Expense has been Created Successfully",
+    });
   };
 
   const onEdit = (editedExpense: ExpensesProps) => {
@@ -48,6 +53,9 @@ const page = () => {
         expense._id === editedExpense._id ? editedExpense : expense
       )
     );
+    toast({
+      title: "Expense has been Edited Successfully",
+    });
   };
 
   const handleDelete = async (id: string) => {
@@ -56,6 +64,9 @@ const page = () => {
       setExpenses((prevExpenses) =>
         prevExpenses.filter((expense) => expense._id !== id)
       );
+      toast({
+        title: "Expense has been Deleted Successfully",
+      });
     } catch (error) {
       console.error(error);
     }

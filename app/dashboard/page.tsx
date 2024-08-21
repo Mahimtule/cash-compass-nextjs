@@ -34,12 +34,12 @@ const page = () => {
   return (
     <main>
       <div className="w-full h-full">
-        <h1 className="text-lg font-medium">Dashboard</h1>
-        <div className="flex flex-col md:flex-row gap-5">
-          <div className="w-full md:w-[70%]">
+        <h1 className="text-lg font-medium mb-2">Dashboard</h1>
+        <div className="flex flex-col lg:flex-row gap-5">
+          <div className="w-full lg:w-[70%]">
             <ExpenseBarChart itemName={itemNames} amount={amounts} />
           </div>
-          <div className="w-full md:w-[30%]">
+          <div className="w-full lg:w-[30%]">
             <FinanceForm />
           </div>
         </div>

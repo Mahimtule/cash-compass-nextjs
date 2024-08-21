@@ -41,6 +41,7 @@ const ExpenseBarChart = ({ itemName, amount }: BarChartProps) => {
 
   const options: ChartOptions<"bar"> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top" as const,
@@ -71,8 +72,8 @@ const ExpenseBarChart = ({ itemName, amount }: BarChartProps) => {
   };
 
   return (
-    <div className="p-5 bg-white rounded-lg">
-      <Bar data={data} options={options} />
+    <div className="p-5 bg-white rounded-lg w-full h-full">
+      <Bar data={data} options={options} className="w-full min-h-[300px] lg:min-h-[550px]" />
     </div>
   );
 };

@@ -1,29 +1,55 @@
 "use client";
 import axios from "axios";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { useToast } from "@/components/ui/use-toast";
 
 const FinanceForm = () => {
-  const [income, setIncome] = useState("");
-  const [budget, setBudget] = useState("");
+  const [income, setIncome] = useState(0);
+  const [budget, setBudget] = useState(0);
+  const { toast } = useToast();
 
-  const numaricIncome = parseInt(income);
-  const numaricBudget = parseInt(budget);
-  const numaricSavings = numaricIncome - numaricBudget;
+  const numericSavings = income - budget;
+
+  useEffect(() => {
+    const fetchFinanceDetails = async () => {
+      const response = await axios.get("/api/v1/finance");
+      setIncome(response.data.finance[0]?.income || 0);
+      setBudget(response.data.finance[0]?.budget || 0);
+    };
+    fetchFinanceDetails();
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       const response = await axios.post("/api/v1/finance", {
-        income: numaricIncome,
-        budget: numaricBudget,
+        income: income,
+        budget: budget,
       });
-      setIncome("");
-      setBudget("");
-    } catch (error) {
+
+      if (response.status === 200) {
+        toast({
+          title: "Financial Details Saved",
+        });
+      }
+    } catch (error: any) {
       console.error(error);
+      if (error.response && error.response.status === 400) {
+        toast({
+          title: "Validation Error.",
+          description: "Savings Can't be Negative!",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error.",
+          description: "An unexpected error",
+          variant: "destructive",
+        });
+      }
     }
   };
   return (
@@ -34,18 +60,18 @@ const FinanceForm = () => {
         <Input
           value={income}
           type="number"
-          onChange={(e) => setIncome(e.target.value)}
+          onChange={(e) => setIncome(e.target.valueAsNumber)}
           required
         />
         <Label>Budget</Label>
         <Input
           value={budget}
           type="number"
-          onChange={(e) => setBudget(e.target.value)}
+          onChange={(e) => setBudget(e.target.valueAsNumber)}
           required
         />
         <Label>Savings</Label>
-        <h1>{numaricSavings || "0"}</h1>
+        <h1>{numericSavings || 0}</h1>
         <Button type="submit">Save</Button>
       </form>
     </div>
